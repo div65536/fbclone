@@ -1,8 +1,9 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,HttpResponse,HttpResponseRedirect
 from .forms import SignUpForm,LoginForm
 from django.contrib import messages
 from .models import FbUser
 from django.contrib.auth import authenticate,login,logout
+from django.urls import reverse
 # Create your views here.
 
 def sign_up(request):
@@ -19,18 +20,34 @@ def sign_up(request):
         fm = SignUpForm()
     return render(request,'users/signup.html',{"form":fm})
 
-def login(request):
+def login_user(request):
     if request.method == 'POST':
         loginform = LoginForm(request.POST)
         if loginform.is_valid():
-            try:
-                user = FbUser.objects.get(email=loginform.cleaned_data['email'])
-                if user.password == loginform.cleaned_data['password']:
-                    messages.info(request,"Login successfull")
-                else:
-                    messages.info(request,"Password is wrong!")
-            except User.DoesNotExist:
-                messages.info(request,"Account with this email does not exist!")
+            email = loginform.cleaned_data['email']
+            password = loginform.cleaned_data['password']
+            user = authenticate(username=email,password=password)
+            if user is not None:
+                login(request,user)
+                return HttpResponseRedirect(reverse('home'))
+            else:
+                try:
+                    user = FbUser.objects.get(email=email)
+                    messages.info(request,"Incorrect password")
+                except FbUser.DoesNotExist:
+                    messages.info(request,"No account with this email exists")
+
     else:
         loginform = LoginForm()
     return render(request,'users/login.html',{"form":loginform})
+
+def home(request):
+    if request.user.is_authenticated:
+        user = FbUser.objects.get(email=request.user)
+        return render(request,'users/base.html',{"user":user})
+    else:
+        return HttpResponseRedirect(reverse('login'))
+
+def logout_user(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('login'))

@@ -12,7 +12,7 @@ class FbUserManager(BaseUserManager):
                         first_name=first_name,last_name=last_name,
                         date_of_birth=date_of_birth,gender=gender)
         user.set_password(password)
-        user.save(using=self._db)
+        user.save()
         return user
 
     def create_superuser(self,email,password,first_name=None,last_name=None,date_of_birth=None,gender=None):
@@ -30,9 +30,11 @@ class FbUser(AbstractBaseUser):
     first_name = models.CharField(max_length=50,null=True)
     last_name = models.CharField(max_length=50,null=True)
     date_of_birth = models.DateField(null=True)
+    profile_picture = models.ImageField(null=True,blank=True,upload_to="images/")
     gender = models.CharField(max_length=6,null=True)
     email = models.EmailField(max_length=254,unique=True)
     password = models.CharField(max_length=100)
+    bio = models.CharField(max_length=250,null=True)
     date_joined = models.DateTimeField(default=now)
     last_login = models.DateTimeField(default=now)
     is_admin = models.BooleanField(default=False)
