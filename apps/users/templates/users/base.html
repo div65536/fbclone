@@ -10,8 +10,9 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
-        <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline" method="POST" action="{% url 'users:search_users' %}">
+          {% csrf_token %}
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searched">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,7 +33,7 @@
         </div>
       </nav>
       <div class="list-group" style="max-width: 200px;">
-        <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+        <a href="{% url 'users:profile' %}" class="list-group-item list-group-item-action" aria-current="true">
             {% if user.profile_picture %}
             <img src="{{user.profile_picture.url}}" alt="Button" style="border-radius: 50%; width: 70px; height: 70px;">
             {% endif %}
@@ -41,10 +42,8 @@
         <a href="#" class="list-group-item list-group-item-action">Friends</a>
         <a href="#" class="list-group-item list-group-item-action">Groups</a>
         <a href="#" class="list-group-item list-group-item-action">Messanger</a>
-        <a href="{% url 'get_posts' %}" class="list-group-item list-group-item-action">Posts</a>
-
       </div>
-      <a href="{% url 'logout' %}">logout</a>
+      <a href="{% url 'users:logout' %}">logout</a>
     <script src="{% static 'users/js/jquery.js' %}"></script>
     <script src="{% static 'users/js/popper.js' %}"></script>
     <script src="{% static 'users/js/bootstrap.min.js' %}"></script>

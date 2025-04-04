@@ -5,6 +5,12 @@ class Post(models.Model):
     author = models.ForeignKey(FbUser,on_delete=models.CASCADE)
     image = models.ImageField(blank = True,upload_to="images/")
     body = models.TextField()
-
+    
     def __str__(self):
         return self.body
+    
+
+class Likes(models.Model):
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    liker = models.ForeignKey(FbUser,on_delete=models.CASCADE)
+

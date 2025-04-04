@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% if searched %}
+    {% for user in users %}
+    <form action="" method="POST">
+        <input type="hidden" value="{{user}}">
+        <a href="">{{ user.first_name|add:" "|add:user.last_name }}</a>
+        <input type="submit" value="Add Friend">
+    </form>
+    <br/>
+    {% endfor %}
+    {% else %}
+    <h1> you forgot to search</h1>
+    {% endif %}
+</body>
+</html>

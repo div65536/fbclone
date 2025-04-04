@@ -1,0 +1,16 @@
+{% extends 'users/bootstrapbase.html'%}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<ul class="nav justify-content-center">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="{% url 'posts:get_posts' %}">Posts</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">About</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Friends</a>
+    </li>
+  </ul>
+{% endblock content %}
