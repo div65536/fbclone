@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'users/css/bootstrap.min.css' %}">
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
+        <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse"  id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Friends</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Groups</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="list-group" style="max-width: 200px;">
+        <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+            {% if user.profile_picture %}
+            <img src="{{user.profile_picture.url}}" alt="Button" style="border-radius: 50%; width: 70px; height: 70px;">
+            {% endif %}
+            {{user.first_name|title}}
+        </a>
+        <a href="#" class="list-group-item list-group-item-action">Friends</a>
+        <a href="#" class="list-group-item list-group-item-action">Groups</a>
+        <a href="#" class="list-group-item list-group-item-action">Messanger</a>
+        <a href="{% url 'get_posts' %}" class="list-group-item list-group-item-action">Posts</a>
+
+      </div>
+      <a href="{% url 'logout' %}">logout</a>
+    <script src="{% static 'users/js/jquery.js' %}"></script>
+    <script src="{% static 'users/js/popper.js' %}"></script>
+    <script src="{% static 'users/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

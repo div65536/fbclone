@@ -1,0 +1,22 @@
+{% extends 'posts/bootstrapbase.html'%}
+
+{% block content %}
+
+<div style="display:flex;flex-direction:column;align-items:center">
+{% for post in posts %}
+
+<div class="card" style="width: 18rem;">
+    {% if post.image %}
+    <img src="{{post.image.url}}" class="card-img-top" alt="..." style="height:200px;width:max-width">
+    {% endif %}
+    {% if post.body %}
+    <div class="card-body">
+      <p class="card-text">{{post.body}}</p>
+    </div>
+    {% endif %}
+  </div>
+</br>
+{% endfor %}
+</div>
+
+{% endblock content %}
