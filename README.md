@@ -1,1 +1,1 @@
-What do you write in the file Redmi.in ?
+What do you write in Readme.md file ?
