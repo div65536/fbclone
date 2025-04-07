@@ -23,3 +23,4 @@ def get_posts(request):
         user_posts = Post.objects.filter(author = request.user)
         print(user_posts)
         return render(request,'posts/posts.html',{"posts":user_posts})
+    

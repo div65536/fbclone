@@ -5,7 +5,7 @@ class Post(models.Model):
     author = models.ForeignKey(FbUser,on_delete=models.CASCADE)
     image = models.ImageField(blank = True,upload_to="images/")
     body = models.TextField()
-    
+    created_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.body
     

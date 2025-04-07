@@ -8,15 +8,14 @@
 <body>
     {% if searched %}
     {% for user in users %}
-    <form action="" method="POST">
-        <input type="hidden" value="{{user}}">
+    <form action="{% url 'friends:send_request' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" value="{{user}}" name="receiver">
         <a href="">{{ user.first_name|add:" "|add:user.last_name }}</a>
         <input type="submit" value="Add Friend">
     </form>
     <br/>
     {% endfor %}
-    {% else %}
-    <h1> you forgot to search</h1>
     {% endif %}
 </body>
 </html>

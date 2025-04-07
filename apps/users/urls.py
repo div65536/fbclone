@@ -9,5 +9,6 @@ urlpatterns = [
     path('home/',views.home,name='home'),
     path('logout/',views.logout_user,name='logout'),
     path('search_users/',views.search_user,name='search_users'),
-    path('profile/',views.user_profile,name='profile')
+    path('profile/',views.user_profile,name='profile'),
+    path('getfeed/',views.get_feed,name="get_feed")
     ]

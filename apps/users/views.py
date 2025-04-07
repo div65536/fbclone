@@ -4,6 +4,8 @@ from django.contrib import messages
 from .models import FbUser
 from django.contrib.auth import authenticate,login,logout
 from django.urls import reverse
+from posts.models import Post
+from friends.models import Friend
 # Create your views here.
 
 def sign_up(request):
@@ -66,3 +68,11 @@ def search_user(request):
 def user_profile(request):
     if request.user.is_authenticated:
         return render(request,'users/profile.html',{})
+    
+
+def get_feed(request):
+    friendset1 = Friend.objects.values_list('from_friend', flat=True)
+    friendset2 = Friend.objects.values_list('to_friend',flat=True)
+    friendset = friendset1.union(friendset2)
+    posts = Post.objects.all().filter(author__in = friendset).exclude(author = request.user).order_by("-created_at") 
+    return render(request,'users/feed.html',{"posts":posts})

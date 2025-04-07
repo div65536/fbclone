@@ -1,0 +1,15 @@
+{% extends 'friends/bootstrapbase.html'%}
+
+
+{% block content %}
+{% if requests %}
+{% for request in requests%}
+<form action="" method="POST">
+    {% csrf_token %}
+    <a href="">{{ request.sender.first_name|add:" "|add:request.sender.last_name }}</a>
+    <input type="hidden" value="{{request.sender}}" name="sender">
+    <input type="submit" value="Accept">
+</form>
+{% endfor %}
+{% endif %}
+{% endblock content %}

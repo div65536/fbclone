@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,UserManager
+from django.contrib.auth.models import AbstractBaseUser,BaseUserManager
 from django.utils.timezone import now 
 # Create your models here.
 class FbUserManager(BaseUserManager):

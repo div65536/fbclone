@@ -7,7 +7,7 @@
         {{form|crispy}}
         <input type="submit">
     </form>
-    <a href="{% url 'login' %}">Already have an account?</a>
+    <a href="{% url 'users:login' %}">Already have an account?</a>
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
