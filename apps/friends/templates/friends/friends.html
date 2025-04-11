@@ -4,11 +4,7 @@
 {% block content %}
 {% if friends %}
 {% for friend in friends %}
-{% if friend.from_friend.email == request.user.email %}
 <a href="">{{ friend.to_friend.first_name|add:" "|add:friend.to_friend.last_name }}</a><br>
-{% else %}
-<a href="">{{ friend.from_friend.first_name|add:" "|add:friend.from_friend.last_name }}</a><br>
-{% endif %}
 {% endfor %}
 {% endif %}
 {% endblock content %}

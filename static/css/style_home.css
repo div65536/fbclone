@@ -1,0 +1,151 @@
+.list-options{
+    margin:10px;
+}
+
+.option{
+    margin-top:40px;
+    margin-right: 10px;
+}
+
+
+
+.flex-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.post-container{
+    background-color: white;
+    height:600px;
+    width:500px;
+    margin:auto;
+    border-radius: 5px;
+    box-shadow: 10px 10px 5px #aaaaaa;
+    margin-top: 10px;
+}
+
+.flex-container-nested{
+    display:flex;
+    flex-direction: column;
+}
+
+
+.profile img{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+body{
+    background-color: whitesmoke;
+}
+
+.profile {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+
+}
+
+.poster-info{
+    display: flex;
+    flex-direction: row;
+}
+
+.posts{
+    display: flex;
+    flex-direction: column;
+}
+
+.post-image{
+    width: 100%;
+    height: 450px;
+}
+
+.buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin:10px;
+}
+
+.flex-container-nested-modal{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.post-container-nested-modal{
+    background-color: white;
+    height: 100%;
+    width:100%;
+    margin:auto;
+    border-radius: 5px;
+}
+
+.flex-container-nested-nested-modal{
+    display:flex;
+    flex-direction: column;
+}
+
+.profile-nested-modal  img{
+    width: 100%;
+    height: 100%;
+}
+
+img{
+    width: 100%;
+    height: 100%;
+}
+
+.profile-nested-modal {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+
+}
+
+.poster-info-nested-modal{
+    display: flex;
+    flex-direction: row;
+}
+
+.posts-nested-modal{
+    display: flex;
+    flex-direction: column;
+}
+
+.post-image-modal{
+    width: 100%;
+    height: 450px;
+}
+
+.comment{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width:90%;
+    height: fit-content;
+    background-color: #aaaaaa;
+    border-radius: 5px;
+}
+
+.comments{
+    margin-top: 5px;
+}
+
+
+
+.modal-body {
+    overflow-y: auto; 
+}
+  
+.modal-footer--sticky {
+    position: sticky;
+    bottom: 0;
+    background-color: #f8f9fa; 
+    z-index: 1055; 
+    padding: 15px;
+    border-top: 1px solid #dee2e6; 
+  }  
