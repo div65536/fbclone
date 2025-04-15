@@ -18,6 +18,11 @@ class Post(models.Model):
     def is_liked_by_user(self, user):
         return self.likes.filter(id=user.id).exists()
 
+    def get_top_level_comments(self):
+        return self.comments.filter(parent=None)
+
+    def get_top_level_nested_comments(self,parent_id):
+        return self.comments.filter(parent=parent_id)
 
 class Comment(models.Model):
     author = models.ForeignKey(
@@ -25,5 +30,6 @@ class Comment(models.Model):
     )
     created_at = models.DateTimeField(auto_now=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
-    parent = models.ForeignKey("self", on_delete=models.CASCADE, blank=True, null=True)
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, blank=True, null=True,related_name="replies")
     content = models.TextField()
+

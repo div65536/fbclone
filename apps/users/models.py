@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.utils.timezone import now
 
 
@@ -62,7 +62,7 @@ class FbUser(AbstractBaseUser):
     gender = models.CharField(max_length=6, null=True)
     email = models.EmailField(max_length=254, unique=True)
     password = models.CharField(max_length=100)
-    bio = models.CharField(max_length=250, null=True)
+    bio = models.CharField(max_length=250, null=True,blank=True)
     date_joined = models.DateTimeField(default=now)
     last_login = models.DateTimeField(default=now)
     is_admin = models.BooleanField(default=False)

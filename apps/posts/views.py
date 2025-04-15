@@ -2,7 +2,8 @@ from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from .models import Post, Comment
 from .forms import PostForm
-
+from django.http import JsonResponse
+from django.core import serializers
 # Create your views here.
 
 
@@ -40,5 +41,31 @@ def handlelike(request, post_id):
         post.likes.add(request.user)
         return HttpResponse(status=201)
 
-def handlecomment(request,post_id):
-    return HttpResponse(status=200)
+def handlecomment(request, post_id, parent_id):
+    if request.method == 'GET':
+        post = Post.objects.get(pk=post_id)
+        comments = post.get_top_level_nested_comments(parent_id=parent_id)
+        info={}
+        for comment in comments:
+            info[comment.id] = {
+                "content":comment.content,
+                "author_name":comment.author.first_name,
+                "profile_picture":comment.author.profile_picture.url
+            }
+        print(info)
+        return JsonResponse(info,status=200,safe=False)
+    if request.method == 'POST':
+        comment_body = request.body.decode("utf-8")
+        post = Post.objects.get(pk=post_id)
+        author = request.user
+        if parent_id == 9999:
+            comment = Comment(author=author, post=post,content=comment_body)
+        else:
+            parent = Comment.objects.get(pk=parent_id)
+            comment = Comment(author=author,post=post,content=comment_body,parent=parent)
+        comment.save()
+        info = {}
+        info["profile_picture"] = author.profile_picture.url
+        info["first_name"] = author.first_name
+        info["comment_id"] = comment.id
+        return JsonResponse(info,status=201)

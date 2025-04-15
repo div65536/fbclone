@@ -37,10 +37,19 @@
             </div>
           </div>
           <div class="row mt-3">
-            <div class="comments" id="comments">
-              {% for comment in post.comments.all %}
-              <div class="comment">
-                {{comment.content}}
+            <div class="comments" id="comments{{post.id}}">
+              {% for comment in post.get_top_level_comments %}
+              <div class="comment" id="comment{{comment.id}}" data-author="{{comment.author.first_name}}">
+                <span class="profile_image">
+                  <img src="{{comment.author.profile_picture.url}}" alt="">
+                </span>
+                <div class="commentandauthor">
+                  <span class="author">{{comment.author.first_name}}</span>
+                  <span class="content">{{comment.content}}</span>
+                  <a data-post-id="{{post.id}}" data-comment-id="{{comment.id}}" href="#" onclick="handleNestedReply(event)">Reply</a>  
+                  <a data-post-id="{{post.id}}" data-comment-id="{{comment.id}}" href="#" onclick="loadNestedReplies(event)">replies</a>
+                </div>
+                <div class="replies" id="replies{{comment.id}}"></div>
               </div>
               {% endfor %}
             </div>
@@ -49,8 +58,9 @@
         </div>
         
         <div class="modal-footer modal-footer--sticky">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" id="csrftoken{{post.id}}">
             <textarea name="user-comment-field" id="user-comment-field{{post.id}}"></textarea>
-            <input onclick="handleComment(event)" type="submit"  value="{{post.id}}">
+            <input data-id="{{post.id}}" onclick="handleComment(event)" type="submit"  value="submit">
         </div>
       </div>
     </div>
