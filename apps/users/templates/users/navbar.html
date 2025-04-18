@@ -1,0 +1,30 @@
+{% load static %}
+<div class="navbar">
+        <div class="left_col">
+          <a href=""><div class="fb-logo icon"><i class="fa-brands fa-facebook fa-2xl"></i></div></a>
+          <div class="search_icon icon">
+            <form onkeydown="submitSearchForm(event)" class="form-inline" method="POST" action="{% url 'users:search_users' %}">
+              {% csrf_token %}
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searched">
+              </form>
+          </div>
+        </div>
+        <div class="middle_col">
+          <a href="{% url 'users:home' %}">
+            <div class="home icon"><i class="fa-solid fa-house fa-2xl"></i></div>
+          </a>
+          <a href="{% url 'friends:get_friends' %}">
+            <div class="friends icon"><i class="fa-solid fa-user-group fa-2xl"></i></div>
+          </a>
+          <a href="">
+            <div class="groups icon"><i class="fa-solid fa-people-group fa-2xl"></i></div>
+          </a>
+        </div>
+        <div class="right_col">
+          <div class="account icon"><i class="fa-solid fa-circle-user fa-2xl"></i></div>
+          <a href="{% url 'friends:get_requests' %}">
+            <div class="notifications icon"><i class="fa-solid fa-bell fa-2xl"></i></div>
+          </a>
+          <div class="messages icon"><i class="fa-solid fa-message fa-2xl"></i></div>
+        </div>
+      </div>

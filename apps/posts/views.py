@@ -4,6 +4,7 @@ from .models import Post, Comment
 from .forms import PostForm
 from django.http import JsonResponse
 from django.core import serializers
+from django.forms.models import model_to_dict
 # Create your views here.
 
 
@@ -17,7 +18,7 @@ def create_post(request):
                 instance.author = request.user
                 instance.save()
         postform = PostForm()
-        return render(request, "posts/create_post.html", {"form": postform})
+        return HttpResponse(status=201)
     else:
         return HttpResponseRedirect(reverse("login"))
 
@@ -69,3 +70,12 @@ def handlecomment(request, post_id, parent_id):
         info["first_name"] = author.first_name
         info["comment_id"] = comment.id
         return JsonResponse(info,status=201)
+
+
+def get_comment_author_info(request,comment_id):
+    comment = Comment.objects.get(pk=comment_id)
+    author_info = comment.author.first_name
+    author_info = {
+    "first_name":author_info
+    }
+    return JsonResponse(author_info,safe=False)

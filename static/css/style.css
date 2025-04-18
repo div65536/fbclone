@@ -46,3 +46,19 @@ body{
     justify-content: space-around;
     margin:10px;
 }
+
+form{
+    display: flex;
+    flex-direction: column
+}
+
+
+
+.login-page-container{
+    height: 100vh;
+    widows: 100vw;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+

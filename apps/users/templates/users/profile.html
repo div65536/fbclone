@@ -1,16 +1,191 @@
-{% extends 'users/bootstrapbase.html'%}
-{% load crispy_forms_tags %}
+<!doctype html>
+{% load static  %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_home.css' %}">
+    <script src="https://kit.fontawesome.com/3d9e517aff.js" crossorigin="anonymous"></script>
+    <title>Profile</title>
+  </head>
+  <body>
+      {% include "users/navbar.html" %}
+      <div class="profile-nav-container">
+                {% if request.user.cover_photo %}
+              <div class="coverphoto-container"  style="background-image:url('{{request.user.cover_photo.url}}');background-repeat: no-repeat;
+        background-size: cover;">
+              {% else %}
+              <div class="coverphoto-container">
+              {% endif %}
+              <div class="profile-picture-container">
+                {% if request.user.profile_picture %}
+                <img src="{{request.user.profile_picture.url}}" alt="">
+                {% else %}
+                <img src="{% static 'images/Default_pfp.jpg' %}" alt="">
+                {% endif %}
+                <button class="add-profile-photo-button" data-target="#upload-photo-modal" data-toggle="modal">
+                  Add Photo
+                </button>
+              </div>
+              <button data-target="#upload-cover-modal" data-toggle="modal" class="add-cover-photo-button">
+                Add Cover Photo
+              </button>
+            </div>
+            <div class="section-2">
+              <span><h1>{{ request.user.first_name|add:" "|add:request.user.last_name }}</h1></span>
+              <button data-target="#upload-bio-modal" data-toggle="modal">Edit profile</button>
+            </div>
+            <div class="second-nav">
+              <div onclick="secondNavHandleClick(event)" class="option" id="posts">Posts <div id="second-nav-line" class="line"></div></div>
+              <div onclick="secondNavHandleClick(event)" class="option" id="about">About</div>
+              <div onclick="secondNavHandleClick(event)" class="option" id="friends">Friends</div>
+            </div>
+          <div class="modal fade" id="upload-photo-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title w-100 text-center" id="exampleModalLongTitle">Choose profile picture</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
 
-{% block content %}
-<ul class="nav justify-content-center">
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="{% url 'posts:get_posts' %}">Posts</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">About</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Friends</a>
-    </li>
-  </ul>
-{% endblock content %}
+                <div class="modal-footer d-flex justify-content-center">
+                  <form method="POST" id="profile-picture-form" action="{% url 'users:upload_profile_picture' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" id="file" name="profile-picture" class="w-100 text-center">
+                    <button onclick="uploadImage(event)" type="button" class="w-100 text-center btn btn-primary">Upload</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="upload-cover-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title w-100 text-center" id="exampleModalLongTitle">Choose cover photo</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <div class="modal-footer d-flex justify-content-center">
+                  <form method="POST" id="cover-picture-form" action="{% url 'users:upload_cover_picture' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" id="file" name="cover-photo" class="w-100 text-center">
+                    <button onclick="uploadCoverImage(event)" type="button" class="w-100 text-center btn btn-primary">Upload</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+         <div class="modal fade" id="upload-bio-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title w-100 text-center" id="exampleModalLongTitle">Write a Bio</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <div class="modal-footer d-flex justify-content-center">
+                  <form method="POST" id="bio-upload-form" action="{% url 'users:upload_bio' %}">
+                    {% csrf_token %}
+                    <textarea class="w-100" name="bio" id="bio"></textarea>
+                    <button onclick="uploadBio(event)" type="button" class="w-100 text-center btn btn-primary">Upload</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="posts-grid">
+        <div class="create-post">
+          <img src="{{request.user.profile_picture.url}}" alt="">
+          <button data-toggle="modal" data-target="#createPostModal">What's on your mind?</button>
+        </div>
+        {% for post,isliked in liked_dict.items %}
+          <div class="post-container">
+            <div class="flex-container-nested">
+              <div class="poster-info">
+                <div class="profile" style="border-radius: 50%;">
+                  <img src="{{post.author.profile_picture.url}}" alt="">
+                </div>
+                <div class="nameanddate">
+                  {{ post.author.first_name|add:" "|add:post.author.last_name }}
+                  <div class="date">
+                    {{post.created_at}}
+                  </div>
+                </div>
+          
+              </div>
+              <div class="bio">
+                {{post.body}}
+              </div>
+              <div class="image-container">
+                <img class="post-image" src="{{post.image.url}}" alt="">
+              </div>
+              <div class="count d-flex flex-row justify-content-between pl-3 pr-3">
+                <span id="likes_count{{post.id}}">{{post.likes.count}} Likes</span>
+                <span>{{post.comments.count}} Comments</span>
+              </div>    
+              <div class="buttons">
+                <div class="like">
+                  {% if isliked %}
+                  <button style="background-color: blue" class="post-button" value="{{post.id}}" onclick="handleClick(event)">
+                    Like
+                  </button>
+                  {% else %}
+                  <button style="background-color: white" class="post-button" value="{{post.id}}" onclick="handleClick(event)">
+                    Like
+                  </button>
+                  {% endif %}
+                </div>
+                <button class="post-button" data-toggle="modal" data-target="#exampleModal{{post.id}}">Comment</button>
+                <button class="post-button">Share</button>
+              </div>
+            </div>
+            {% include "users/post_comment_modal.html" with post=post %}
+          </div>
+          
+          {% endfor %}
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="createPostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Create Post</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                  <form id="create-post-form" action="{% url 'posts:create_post' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{create_post_form}}
+                  </form>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button onclick="submitPostForm(event)" type="button" class="btn btn-primary">Post</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <script src="{% static 'js/profile_script.js' %}"></script>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/ajaxhandler.js' %}"></script>
+  </body>
+</html>

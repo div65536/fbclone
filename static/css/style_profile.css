@@ -1,0 +1,150 @@
+.profile-nav-container{
+    height: 90vh;
+    background-color: #FFFFFF;
+    display: flex;  
+    flex-direction: column;
+    align-items: center;
+}
+
+.second-nav{
+    background-color: #FFFFFF;
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+}
+
+.option{
+    padding: 20px;
+}
+
+.option:hover{
+    background-color: #F2F2F2;
+}
+
+.line{
+    background-color:blue;
+    height: 4px;
+    width: 50px;
+    border-radius: 2px;
+}
+
+.posts-grid{
+    display: grid;
+    height: 100vh;
+    grid-template-rows: 250px;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: auto;
+}
+
+.create-post{
+    place-self:center;
+    height: 40%;
+    width: 70%;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    grid-column-start: 1;
+    grid-column-end: 3;
+
+}
+
+.create-post img{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-left: 20px;
+}
+
+.create-post button{
+    width: 80%;
+    height: 40%;
+    margin-left: 50px;
+    background-color:#E4E6E9;
+    border-radius: 20px;
+    text-align: left;
+}
+
+.create-post button:hover{
+    background-color:#E4EEEE;
+}
+
+body{
+    background-color: #F2F4F7;
+}
+
+.coverphoto-container{
+    height: 60vh;
+    width: 70vw;
+    background-image:linear-gradient(lightgray 75%,gray);
+    margin: auto;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+    
+.coverphoto-container > button{
+    border-radius: 5px;
+    background-color:white;
+    width: 150px;
+}
+
+button{
+    background-color: white;
+    border-radius: 5px;
+}
+
+.profile-picture-container{
+    position: absolute;
+    left: 20%;
+    top: 50%;
+    width: 15vw;
+    height: 15vw;
+    border-radius: 50%;
+
+}
+
+.profile-picture-container img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%
+}
+
+.add-profile-photo-button{
+    position: absolute;
+    top: 70%;
+    left: 75%;
+    width: 100px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+.section-2{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 15vh;
+    width: 70vw;
+    margin: auto;
+    padding-left: 25%;
+    padding-top: 20px;
+}
+
+
+.section-2 button{
+    height: 30px;
+}
+
+.intro{
+    height: 400px;
+    width: 400px;
+    align-items: center;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+
+}

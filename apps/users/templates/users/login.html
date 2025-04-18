@@ -1,12 +1,31 @@
-{% extends 'users/bootstrapbase.html'%}
-{% load crispy_forms_tags %}
 
-{% block content %}
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{form|crispy}}
-        <input type="submit">
-    </form>
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="login-page-container">
+        <div class="logo">
+            <h1 style="color:blue">facebook</h1>
+        </div>
+        <div class="login-form">
+            <form action="" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit">
+        </form>
+        </div>
+
+    </div>
     {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -17,4 +36,8 @@
     {% endfor %}
 </ul>
 {% endif %}
-{% endblock content %}
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

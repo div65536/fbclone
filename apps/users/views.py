@@ -6,7 +6,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from posts.models import Post
 from friends.models import Friend
-
+from django.http import HttpResponse
+from posts.forms import PostForm
 # Create your views here.
 
 
@@ -83,7 +84,7 @@ def logout_user(request):
 
 def search_user(request):
     if request.method == "POST":
-        searched = request.POST["searched"]
+        searched = request.POST["searched"] 
         users = FbUser.objects.filter(email__contains=searched).exclude(
             id=request.user.id
         )
@@ -97,7 +98,13 @@ def search_user(request):
 
 def user_profile(request):
     if request.user.is_authenticated:
-        return render(request, "users/profile.html", {})
+        form = PostForm()
+        user_posts = Post.objects.all().filter(author = request.user).order_by("-created_at")
+
+        liked_dict = {
+            post: post.is_liked_by_user(user=request.user) for post in list(user_posts)
+        }
+        return render(request, "users/profile.html", {"create_post_form":form,"liked_dict":liked_dict})
 
 
 def get_feed(request):
@@ -113,3 +120,23 @@ def get_feed(request):
         .order_by("-created_at")
     )
     return render(request, "users/feed.html", {"posts": posts})
+
+def get_profile(request):
+    return render(request,"users/profile.html")
+
+
+def upload_profile_picture(request):
+    request.user.profile_picture = request.FILES['profile-picture']
+    request.user.save()
+    return HttpResponseRedirect(reverse("users:get_profile"))
+
+def upload_cover_picture(request):
+    request.user.cover_photo = request.FILES['cover-photo']
+    request.user.save()
+    return HttpResponseRedirect(reverse("users:get_profile"))
+
+
+def upload_bio(request):
+    request.user.bio = request.POST["bio"]
+    request.user.save()
+    return HttpResponseRedirect(reverse("users:get_profile"))

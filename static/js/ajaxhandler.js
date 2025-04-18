@@ -2,21 +2,20 @@
 
 function handleClick(event){
     post_id = event.target.value
+    console.log(post_id)
     let xhr = new XMLHttpRequest();
     xhr.open("GET",`/posts/like_post/${post_id}`)
     xhr.onreadystatechange = function(){
+        likes = document.getElementById(`likes_count${post_id}`).innerText.split(" ")
+        likes = parseInt(likes)
         if(xhr.status == 201 && xhr.readyState==4){
-            likes = document.getElementById(post_id).innerText
-            likes = parseInt(likes)
             likes += 1 
-            document.getElementById(post_id).innerText = likes
+            document.getElementById(`likes_count${post_id}`).innerText = likes+" Likes"
             event.target.style.backgroundColor="blue"
         }
         else if(xhr.status==409 && xhr.readyState==4){
-            likes = document.getElementById(post_id).innerText
-            likes = parseInt(likes)
             likes -= 1
-            document.getElementById(post_id).innerText = likes 
+            document.getElementById(`likes_count${post_id}`).innerText = likes+" Likes" 
             event.target.style.backgroundColor="white"
         }
     }
@@ -96,13 +95,20 @@ function createComment(info,content,postId){
 function handleNestedReply(event){
     parentId = event.target.dataset.commentId
     postId = event.target.dataset.postId
-    console.log(parentId)
-    console.log(postId)
     userCommentField = document.getElementById(`user-comment-field${postId}`)
     userCommentField.setAttribute("data-parent-id",parentId)
     userCommentField.setAttribute("data-post-id",postId)
-    userCommentField.value = '@\n'
-    userCommentField.focus()
+
+    let xhr = new XMLHttpRequest()
+    xhr.open("GET", `/posts/commentauthorinfo/${parentId}`)
+    xhr.onload = function(){
+        if(xhr.status==200){
+            authorInfo = JSON.parse(xhr.responseText)
+            userCommentField.value = `@${authorInfo["first_name"]}\n`
+            userCommentField.focus()
+        }
+    }
+    xhr.send()
 }
 
 
@@ -118,8 +124,16 @@ function postCommentxhr(postId,parentId,content){
         if(xhr.status == 201){
             info = JSON.parse(xhr.responseText)
             comment = createComment(info,content,postId)
-            document.getElementById(`comments${postId}`).appendChild(comment)
+            if(parentId != 9999){
+                document.getElementById(`replies${parentId}`).appendChild(comment)
+            }
+            else{
+                document.getElementById(`comments${postId}`).appendChild(comment)
+            }
+            
             document.getElementById(`user-comment-field${postId}`).value = ''
+            userCommentField = document.getElementById(`user-comment-field${postId}`)
+            userCommentField.removeAttribute('data-parent-id')
         }
     } 
     xhr.send(content)
@@ -145,3 +159,4 @@ function loadNestedReplies(event){
     }
     xhr.send()
 }
+

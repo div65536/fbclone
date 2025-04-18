@@ -9,4 +9,5 @@ urlpatterns = [
     path("user_posts/", views.get_posts, name="get_posts"),
     path("like_post/<int:post_id>", views.handlelike, name="handlelike"),
     path("comment/<int:post_id>/<int:parent_id>",views.handlecomment,name="handlecomment"),
+    path("commentauthorinfo/<int:comment_id>",views.get_comment_author_info,name="commentauthorinfo")
 ]
