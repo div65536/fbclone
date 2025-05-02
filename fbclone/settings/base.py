@@ -29,6 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
 
 # Application definition
 
@@ -44,6 +45,14 @@ INSTALLED_APPS = [
     'friends',
     'crispy_forms',
     'crispy_bootstrap4',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+    'django_extensions',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -56,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'fbclone.urls'
@@ -102,6 +112,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "OPTIONS":{
+            "min_length":9,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -137,3 +150,55 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "users.FbUser"
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend', # This is the default that allows us to log in via username
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'users.auth.UsernameorEmailBackend'
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        'APP': {
+            'client_id': 'Ov23li5NP3agktzAxDmQ',
+            'secret': 'c24814aebe377b8089c553f9afad6543f8f2fb53',
+            'key': ''
+        }
+    },
+    'google': {
+        'APP': {
+            'client_id': '137116042536-6hur06946rmh6l83ik98io3cqf9i4oqc.apps.googleusercontent.com',
+            'secret': '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'
+        },
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+        'METHOD': 'oauth2',
+        'VERIFIED_EMAIL': True
+    },
+    'facebook': {
+        'APP': {
+            'client_id': '1092069769421683',
+            'secret': 'd3c3daeea96f122b6466c5fab4462e6f'
+        }
+    }
+}
+
+LOGIN_REDIRECT_URL = '/users/home' 
+
+# ...
+
+# Celery settings
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'divyanshyb@gmail.com'
+EMAIL_HOST_PASSWORD = 'tjemscribthvjqxe'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+SOCIALACCOUNT_ADAPTER = 'fbclone.adapter.CustomSocialAccountAdapter'
+SOCIALACCOUNT_LOGIN_ON_GET = True

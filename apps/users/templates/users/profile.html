@@ -22,10 +22,10 @@
               <div class="coverphoto-container">
               {% endif %}
               <div class="profile-picture-container">
-                {% if request.user.profile_picture %}
-                <img src="{{request.user.profile_picture.url}}" alt="">
-                {% else %}
+                {% if not request.user.profile_picture %}
                 <img src="{% static 'images/Default_pfp.jpg' %}" alt="">
+                {% else %}
+                <img src="{{request.user.profile_picture.url}}" alt="">
                 {% endif %}
                 <button class="add-profile-photo-button" data-target="#upload-photo-modal" data-toggle="modal">
                   Add Photo
@@ -108,28 +108,40 @@
           </div>
       </div>
 
-      <div class="posts-grid">
         <div class="create-post">
+          {% if request.user.profile_picture %}
           <img src="{{request.user.profile_picture.url}}" alt="">
+          {% else %}
+          <img src="{% static 'images/Default_pfp.jpg' %}" alt="">
+          {% endif %}
           <button data-toggle="modal" data-target="#createPostModal">What's on your mind?</button>
         </div>
+
+      <div class="posts-grid">
         {% for post,isliked in liked_dict.items %}
           <div class="post-container">
             <div class="flex-container-nested">
+              
               <div class="poster-info">
                 <div class="profile" style="border-radius: 50%;">
                   <img src="{{post.author.profile_picture.url}}" alt="">
                 </div>
+                
                 <div class="nameanddate">
                   {{ post.author.first_name|add:" "|add:post.author.last_name }}
                   <div class="date">
                     {{post.created_at}}
+                    <button data-toggle="modal" data-target="#edit-post-{{post.id}}" data-id="{{post.id}}" onclick="saveImage(event)">Edit</button>
                   </div>
+                  
                 </div>
           
               </div>
               <div class="bio">
-                {{post.body}}
+                <p>{{post.body|slice:"60"}}<span style="display:none;" id="hidden-body{{post.id}}">{{post.body|slice:"61:"}}</span>
+                  <button data-postid="{{post.id}}" id="read-more-link{{post.id}}" style="display: inline-block;" onclick="handleReadMore(event)">Read More</button>
+                  <button data-postid="{{post.id}}" id="read-less-link{{post.id}}" style="display: none;" onclick="handleReadLess(event)">Read Less</button>
+                </p>
               </div>
               <div class="image-container">
                 <img class="post-image" src="{{post.image.url}}" alt="">
@@ -141,11 +153,11 @@
               <div class="buttons">
                 <div class="like">
                   {% if isliked %}
-                  <button style="background-color: blue" class="post-button" value="{{post.id}}" onclick="handleClick(event)">
+                  <button style="background-color: blue" class="post-button btn btn-primary" value="{{post.id}}" onclick="handleClick(event)">
                     Like
                   </button>
                   {% else %}
-                  <button style="background-color: white" class="post-button" value="{{post.id}}" onclick="handleClick(event)">
+                  <button class="post-button btn btn-primary" value="{{post.id}}" onclick="handleClick(event)">
                     Like
                   </button>
                   {% endif %}
@@ -154,6 +166,7 @@
                 <button class="post-button">Share</button>
               </div>
             </div>
+            {% include "users/edit_post_modal.html" with post=post %}
             {% include "users/post_comment_modal.html" with post=post %}
           </div>
           

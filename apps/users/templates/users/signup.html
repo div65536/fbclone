@@ -1,13 +1,17 @@
 {% extends 'users/bootstrapbase.html'%}
+{% load static %}
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{form|crispy}}
-        <input type="submit">
-    </form>
-    <a href="{% url 'users:login' %}">Already have an account?</a>
+    <div class="signup-form-container">
+        <img src="{% static 'images/facebook.svg' %}" alt="">
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit">
+        </form>
+    <a href="{% url 'users:login' %}">Already have an account?</a> 
+    </div>
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}

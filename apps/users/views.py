@@ -8,6 +8,10 @@ from posts.models import Post
 from friends.models import Friend
 from django.http import HttpResponse
 from posts.forms import PostForm
+from django.core.mail import send_mail
+from fbclone.settings.base import EMAIL_HOST_USER
+from .tasks import send_registration_email
+from django.views.decorators.cache import never_cache
 # Create your views here.
 
 
@@ -17,10 +21,11 @@ def sign_up(request):
         if fm.is_valid():
             try:
                 FbUser.objects.get(email=fm.cleaned_data["email"])
-                messages.info(request, "User with this email already exists!")
+                messages.info(request, "User with this email or username already exists!")
             except FbUser.DoesNotExist:
                 messages.info(request, "Account created successfully!")
                 fm.save()
+                send_registration_email.delay(fm.cleaned_data['email'], "Your Account has been succesfully created")
     else:
         fm = SignUpForm()
     return render(request, "users/signup.html", {"form": fm})
@@ -47,7 +52,7 @@ def login_user(request):
         loginform = LoginForm()
     return render(request, "users/login.html", {"form": loginform})
 
-
+@never_cache
 def home(request):
     if request.user.is_authenticated:
         user = FbUser.objects.get(email=request.user)
@@ -73,6 +78,7 @@ def home(request):
             "users/base.html",
             {"user": user, "posts": posts, "liked_dict": liked_dict},
         )
+
     else:
         return HttpResponseRedirect(reverse("users:login"))
 

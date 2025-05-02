@@ -58,10 +58,11 @@ class FbUser(AbstractBaseUser):
     first_name = models.CharField(max_length=50, null=True)
     last_name = models.CharField(max_length=50, null=True)
     date_of_birth = models.DateField(null=True)
-    profile_picture = models.ImageField(null=True, blank=True, upload_to="images/", default="/static/images/Default_pfp.jpg")
+    profile_picture = models.ImageField(null=True, blank=True, upload_to="images/", default=None)
     cover_photo = models.ImageField(null=True, blank=True, upload_to="images/")
     gender = models.CharField(max_length=6, null=True)
     email = models.EmailField(max_length=254, unique=True)
+    username = models.CharField(max_length=254,unique=True)
     password = models.CharField(max_length=100)
     bio = models.CharField(max_length=250, null=True,blank=True)
     date_joined = models.DateTimeField(default=now)
@@ -78,9 +79,12 @@ class FbUser(AbstractBaseUser):
         return self.email
 
     def save(self, *args, **kwargs):
-        self.first_name = self.first_name.capitalize()
-        self.last_name = self.last_name.capitalize()
-        super().save(*args, **kwargs)
+        if self.first_name == None and self.last_name == None:
+            super().save(*args,**kwargs)
+        else:
+            self.first_name = self.first_name.capitalize()
+            self.last_name = self.last_name.capitalize()
+            super().save(*args, **kwargs)
 
     def has_perm(self, perm, obj=None):
         return self.is_admin

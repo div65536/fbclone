@@ -21,10 +21,16 @@
           </a>
         </div>
         <div class="right_col">
-          <div class="account icon"><i class="fa-solid fa-circle-user fa-2xl"></i></div>
+          <div class="dropdown">
+            <div class="account dropdown-toggle icon" data-bs-toggle="dropdown" aria-expanded="false">
+              <i style="color:#2757B3" class="fa-solid fa-circle-user fa-2xl"></i>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-center">
+              <li><a class="dropdown-item" href="{% url 'users:logout' %}"><i class="fa-solid fa-right-from-bracket fa-xl"></i>Logout</a></li>
+            </ul>
+          </div>
           <a href="{% url 'friends:get_requests' %}">
             <div class="notifications icon"><i class="fa-solid fa-bell fa-2xl"></i></div>
           </a>
-          <div class="messages icon"><i class="fa-solid fa-message fa-2xl"></i></div>
         </div>
       </div>

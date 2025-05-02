@@ -5,6 +5,7 @@ from .forms import PostForm
 from django.http import JsonResponse
 from django.core import serializers
 from django.forms.models import model_to_dict
+
 # Create your views here.
 
 
@@ -18,7 +19,7 @@ def create_post(request):
                 instance.author = request.user
                 instance.save()
         postform = PostForm()
-        return HttpResponse(status=201)
+        return HttpResponseRedirect(reverse("users:get_profile"))
     else:
         return HttpResponseRedirect(reverse("login"))
 
@@ -42,40 +43,51 @@ def handlelike(request, post_id):
         post.likes.add(request.user)
         return HttpResponse(status=201)
 
+
 def handlecomment(request, post_id, parent_id):
-    if request.method == 'GET':
+    if request.method == "GET":
         post = Post.objects.get(pk=post_id)
         comments = post.get_top_level_nested_comments(parent_id=parent_id)
-        info={}
+        info = {}
         for comment in comments:
             info[comment.id] = {
-                "content":comment.content,
-                "author_name":comment.author.first_name,
-                "profile_picture":comment.author.profile_picture.url
+                "content": comment.content,
+                "author_name": comment.author.first_name,
+                "profile_picture": comment.author.profile_picture.url,
             }
         print(info)
-        return JsonResponse(info,status=200,safe=False)
-    if request.method == 'POST':
+        return JsonResponse(info, status=200, safe=False)
+    if request.method == "POST":
         comment_body = request.body.decode("utf-8")
         post = Post.objects.get(pk=post_id)
         author = request.user
         if parent_id == 9999:
-            comment = Comment(author=author, post=post,content=comment_body)
+            comment = Comment(author=author, post=post, content=comment_body)
         else:
             parent = Comment.objects.get(pk=parent_id)
-            comment = Comment(author=author,post=post,content=comment_body,parent=parent)
+            comment = Comment(
+                author=author, post=post, content=comment_body, parent=parent
+            )
         comment.save()
         info = {}
         info["profile_picture"] = author.profile_picture.url
         info["first_name"] = author.first_name
         info["comment_id"] = comment.id
-        return JsonResponse(info,status=201)
+        return JsonResponse(info, status=201)
 
 
-def get_comment_author_info(request,comment_id):
+def get_comment_author_info(request, comment_id):
     comment = Comment.objects.get(pk=comment_id)
     author_info = comment.author.first_name
-    author_info = {
-    "first_name":author_info
-    }
-    return JsonResponse(author_info,safe=False)
+    author_info = {"first_name": author_info}
+    return JsonResponse(author_info, safe=False)
+
+
+def edit_post(request, post_id):
+    if request.method == "POST":
+        post = Post.objects.get(pk=post_id)
+        if request.FILES.get("file"):
+            post.image = request.FILES["file"]
+        post.body = request.POST["text"]
+        post.save()
+        return HttpResponseRedirect(reverse("users:get_profile"))

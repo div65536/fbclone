@@ -1,0 +1,12 @@
+.container{
+	margin-left: 40%;
+	margin-top:10%;
+	background-color: white;
+	width: 200px;
+	border-radius: 5px;
+	padding: 20px;
+}
+
+body{
+	background-color: #E9EBEE;
+}

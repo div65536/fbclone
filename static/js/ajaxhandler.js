@@ -16,7 +16,7 @@ function handleClick(event){
         else if(xhr.status==409 && xhr.readyState==4){
             likes -= 1
             document.getElementById(`likes_count${post_id}`).innerText = likes+" Likes" 
-            event.target.style.backgroundColor="white"
+            event.target.style.backgroundColor="#0d6efd"
         }
     }
     xhr.send()
@@ -160,3 +160,24 @@ function loadNestedReplies(event){
     xhr.send()
 }
 
+
+function handleReadMore(event){
+    postId = event.target.dataset.postid
+    console.log(postId) 
+    hiddenBody = document.getElementById(`hidden-body${postId}`)
+    hiddenBody.style.display="inline"
+    readLessLink = document.getElementById(`read-less-link${postId}`)
+    readLessLink.style.display="inline"
+    readMoreLink = document.getElementById(`read-more-link${postId}`)
+    readMoreLink.style.display="none"
+}
+
+function handleReadLess(event){
+    postId = event.target.dataset.postid
+    hiddenBody = document.getElementById(`hidden-body${postId}`)
+    hiddenBody.style.display="none"
+    readLessLink = document.getElementById(`read-less-link${postId}`)
+    readLessLink.style.display="none"
+    readMoreLink = document.getElementById(`read-more-link${postId}`)
+    readMoreLink.style.display="inline"
+}

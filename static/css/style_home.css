@@ -5,11 +5,13 @@
 }
 
 .list-options{
-    margin:10px;
+    margin-top:50px;
+    margin-left: 10px;
+    position: fixed;
 }
 
 .option{
-    margin-top:40px;
+    margin-top:25px;
     margin-right: 10px;
 }
 
@@ -22,13 +24,18 @@
 
 .post-container{
     background-color: white;
-    height:600px;
+    height:min-content;
     width:500px;
-    margin:auto;
+    margin-left: 35vw;
     border-radius: 5px;
     box-shadow: 10px 10px 5px #aaaaaa;
-    margin-top: 10px;
+    margin-top: 70px;
 }
+
+.bio{
+    overflow-wrap:break-word;
+}
+
 
 .flex-container-nested{
     display:flex;
@@ -175,14 +182,6 @@ span img{
     margin-left:20px;
 } 
 
-
-
-.post-button{
-    width:min-cotent;
-    height:min-content;
-    border-radius: 5px;
-    background-color: white;
-}
 
 .options{
     border-radius: 5px;

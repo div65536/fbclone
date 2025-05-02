@@ -1,0 +1,72 @@
+{% load static %}
+<div class="modal fade" id="edit-post-{{post.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div style="width: 500px; height: 700px;" class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content" style="height: 100%;width: 100%;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{post.author.first_name}} post</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="post-container-nested-modal">
+                <div class="flex-container-nested-nested-modal">
+                  <div class="poster-info-nested-modal">
+                    <div class="profile-nested-modal">
+                      <img src="{% static 'images/Default_pfp.jpg'%}" alt="">
+                    </div>
+                    <div class="nameanddate-nested-modal">
+                      {{post.author.first_name}}
+                      <div class="date-nested-modal">
+                        {{post.created_at}}
+                      </div>
+                    </div>
+              
+                  </div>
+                  <div class="bio-nested-modal">
+                    <textarea name="" id="edit-post-body-field{{post.id}}" autofocus>{{post.body}}</textarea>
+                  </div>
+                  <div class="image-container-nested-modal">
+                    {% comment %} <button id="post-image-edit-button{{post.id}}" class="post-image-edit-button" data-toggle="modal"  data-target="#edit-post-image-modal{{post.id}}">Edit</button> {% endcomment %}
+                    <input type="file" id="edit-post-image-field{{post.id}}">
+                    <img class="post-image-nested-modal{{post.id}}" src="{{post.image.url}}" alt="">
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button style="width:100%" class="btn btn-primary" data-id="{{post.id}}" onclick="editImage(event)">Save</button>
+          </div>
+          
+
+        </div>
+        
+        <div class="modal fade" id="edit-post-image-modal{{post.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title w-100 text-center" id="exampleModalLongTitle">Choose alternate image</h5>
+                <button type="button" class="close{{post.id}}" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-footer d-flex justify-content-center">
+                
+                  <input type="hidden" id="csrftoken-edit{{post.id}}" value="{{ csrf_token }}">
+                  <input type="file" id="post-image{{post.id}}" name="post-image" class="w-100 text-center">
+                  <button onclick="saveImage(event)" type="button" data-id="{{post.id}}" class="w-100 text-center btn btn-primary">Upload</button>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+      </div>
+    </div>
+  </div>
