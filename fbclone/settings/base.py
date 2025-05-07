@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'users',
     'posts',
     'friends',
+    'api',
+    'rest_framework',
     'crispy_forms',
     'crispy_bootstrap4',
     'django.contrib.sites',

@@ -80,7 +80,7 @@ class FbUser(AbstractBaseUser):
 
     def save(self, *args, **kwargs):
         if self.first_name == None and self.last_name == None:
-            super().save(*args,**kwargs)
+            super().save(*args, **kwargs)
         else:
             self.first_name = self.first_name.capitalize()
             self.last_name = self.last_name.capitalize()
@@ -91,3 +91,6 @@ class FbUser(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return self.is_admin
+    
+    class Meta:
+        app_label = 'users'

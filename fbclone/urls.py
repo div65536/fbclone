@@ -22,7 +22,10 @@ from django.conf import settings
 from django.contrib.auth import views as auth_views
 
 
+
+
 urlpatterns = [
+    path("api/", include("api.urls")),
     path("password_reset/", auth_views.PasswordResetView.as_view(template_name='reset/reset_password.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='reset/password_reset_sent.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='reset/password_reset_form.html'), name='password_reset_confirm'),
@@ -32,6 +35,7 @@ urlpatterns = [
     path("posts/", include("posts.urls")),
     path("friends/", include("friends.urls")),
     path("accounts/", include('allauth.urls')),
+    path("api-auth/", include('rest_framework.urls')),
 
 ]
 
