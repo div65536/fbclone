@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_navbar.css' %}">
+    <script src="https://kit.fontawesome.com/3d9e517aff.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+      {% include "users/navbar.html" %}
+      <div class="flex-container">
+        <div class="list-options">
+          <a href="{% url 'users:get_profile' %}">
+            <div class="option options">
+              <i class="fa-solid fa-circle-user fa-xl"></i>
+              <span>{{ request.user.first_name|add:" "|add:request.user.last_name }}</span>
+            </div>
+          </a>
+          <a href="{% url 'friends:get_friends' %}">
+            <div class="option options">
+              <i class="fa-solid fa-user-group fa-xl"></i>
+              <span>Friends</span>
+            </div>
+          </a>
+
+          <div class="option options">
+            <i class="fa-brands fa-facebook fa-xl"></i>
+            <span>Welcome</span>
+          </div>
+          <div class="option options">
+            <i class="fa-solid fa-bookmark fa-xl"></i>
+            <span>Saved</span>
+          </div>
+          <div class="option options">
+            <i class="fa-solid fa-people-group fa-xl"></i>
+            <span>Groups</span>
+          </div>
+          <div class="option options">
+            <i class="fa-solid fa-video fa-xl"></i>
+            <span>Video</span>
+          </div>
+          <div class="option options">
+            <i class="fa-solid fa-shop fa-xl"></i>
+            <span>Marketplace</span>
+          </div>
+        </div>
+        <div class="posts">
+          {% for post,isliked in liked_dict.items %}
+          
+          <div class="post-container">
+            <div class="flex-container-nested">
+              <div class="poster-info">
+                <div class="profile" style="border-radius: 50%;">
+                {% if not post.author.profile_picture %}
+                <img src="{% static 'images/Default_pfp.jpg' %}" alt="">
+                {% else %}
+                <img src="{{post.author.profile_picture.url}}" alt="">
+                {% endif %}
+                </div>
+                <div class="nameanddate">
+                  {{ post.author.first_name|add:" "|add:post.author.last_name }}
+                  <div class="date">
+                    {{post.created_at}}
+                  </div>
+                </div>
+          
+              </div>
+              <div class="bio">
+                <p>{{post.body|slice:"60"}}<span style="display:none;" id="hidden-body{{post.id}}">{{post.body|slice:"61:"}}</span>
+                  <button class="btn btn-info" data-postid="{{post.id}}" id="read-more-link{{post.id}}" style="display: inline-block;" onclick="handleReadMore(event)">Read More</button>
+                  <button class="btn btn-info" data-postid="{{post.id}}" id="read-less-link{{post.id}}" style="display: none;" onclick="handleReadLess(event)">Read Less</button>
+                </p>
+              </div>
+              <div class="image-container">
+                <img class="post-image" src="{{post.image.url}}" alt="">
+              </div>
+              <div class="count d-flex flex-row justify-content-between pl-3 pr-3">
+                <span id="likes_count{{post.id}}">{{post.likes.count}} Likes</span>
+                <span>{{post.comments.count}} Comments</span>
+              </div>    
+              <div class="buttons">
+                <div class="like">
+                  {% if isliked %}
+                  <button style="background-color: blue" class="post-button btn btn-primary" value="{{post.id}}" onclick="handleClick(event)">
+                    Like
+                  </button>
+                  {% else %}
+                  <button class="post-button btn btn-primary" value="{{post.id}}" onclick="handleClick(event)">
+                    Like
+                  </button>
+                  {% endif %}
+                </div>
+                <button class="post-button btn btn-primary" data-toggle="modal" data-target="#exampleModal{{post.id}}">Comment</button>
+                <button class="post-button btn btn-primary">Share</button>
+              </div>
+            </div>
+            {% include "users/post_comment_modal.html" with post=post %}
+          </div>
+          
+          <br>
+          {% endfor %}
+
+        </div>
+        <div class="groupchats">
+          <div class="option">
+            <i class="fa-solid fa-plus fa-xl"></i>
+            <span>Create group chat</span>
+          </div>
+        </div>
+      </div>
+      
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/ajaxhandler.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+</body>
+</html>

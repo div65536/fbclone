@@ -13,16 +13,26 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os 
 import sys
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-sys.path.insert(0,os.path.join(BASE_DIR,'apps'))
+import sentry_sdk
+import environ
 
-STATIC_DIR = os.path.join(BASE_DIR,'static')
+env = environ.Env()
+
+
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+print(BASE_DIR)
+environ.Env.read_env(os.path.join(BASE_DIR.parent, '.env'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+print(STATIC_DIR)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-p8$6ygy^s$3yhxdy&xau+@37_st5*&6cfvga-ovd--k)1e6qq7'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -45,8 +55,6 @@ INSTALLED_APPS = [
     'friends',
     'api',
     'rest_framework',
-    'crispy_forms',
-    'crispy_bootstrap4',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -76,7 +84,7 @@ ROOT_URLCONF = 'fbclone.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -164,15 +172,15 @@ AUTHENTICATION_BACKENDS = [
 SOCIALACCOUNT_PROVIDERS = {
     'github': {
         'APP': {
-            'client_id': 'Ov23li5NP3agktzAxDmQ',
-            'secret': 'c24814aebe377b8089c553f9afad6543f8f2fb53',
+            'client_id': env('GITHUB_CLIENT_ID'),
+            'secret': env('GITHUB_SECRET'),
             'key': ''
         }
     },
     'google': {
         'APP': {
-            'client_id': '137116042536-6hur06946rmh6l83ik98io3cqf9i4oqc.apps.googleusercontent.com',
-            'secret': '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'
+            'client_id': env('GOOGLE_CLIENT_ID'),
+            'secret': env('GOOGLE_SECRET')
         },
         'SCOPE': ['profile', 'email'],
         'AUTH_PARAMS': {'access_type': 'online'},
@@ -181,8 +189,8 @@ SOCIALACCOUNT_PROVIDERS = {
     },
     'facebook': {
         'APP': {
-            'client_id': '1092069769421683',
-            'secret': 'd3c3daeea96f122b6466c5fab4462e6f'
+            'client_id': env('FACEBOOK_CLIENT_ID'),
+            'secret': env('FACEBOOK_SECRET')
         }
     }
 }
@@ -205,3 +213,33 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 SOCIALACCOUNT_ADAPTER = 'fbclone.adapter.CustomSocialAccountAdapter'
 SOCIALACCOUNT_LOGIN_ON_GET = True
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+
+    # 'DEFAULT_THROTTLE_CLASSES': [
+    #     'rest_framework.throttling.AnonRateThrottle',
+    #     'rest_framework.throttling.UserRateThrottle'
+    # ],
+    # 'DEFAULT_THROTTLE_RATES': {
+    #     'anon': '5/day',
+    #     'user': '10/day'
+    # }
+}
+
+
+sentry_sdk.init(
+    dsn="https://83aafe45a6051ee65bce9fcf037b8013@o4509314127495168.ingest.us.sentry.io/4509314224881664",
+    # Add data like request headers and IP for users,
+    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+    send_default_pii=True,
+)

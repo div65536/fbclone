@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_search.css' %}">
+</head>
+<body>
+    <div class="user-container">
+    {% for user in users %}
+        <div class="card" style="width: 18rem;">
+            {% if not user.profile_picture %}
+                <img class="card-img-top rounded-circle h-50" src="{% static 'images/Default_pfp.jpg' %}" alt="Card image cap">
+                {% else %}
+                <img class="card-img-top rounded-circle h-50" src="{{user.profile_picture.url}}" alt="Card image cap">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ user.first_name|add:" "|add:user.last_name }}</h5>
+                <p class="card-text">{{user.bio}}</p>
+                <form action="{% url 'friends:send_request' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" value="{{user}}" name="receiver">
+                    <a href="">{{ user.first_name|add:" "|add:user.last_name }}</a>
+                    <input type="submit" value="Add Friend">
+                </form>
+            </div>
+        </div>
+
+    {% endfor %}
+    </div>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

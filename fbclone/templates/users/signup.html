@@ -1,0 +1,24 @@
+{% extends 'users/bootstrapbase.html'%}
+{% load static %}
+
+{% block content %}
+    <div class="signup-form-container">
+        <img src="{% static 'images/facebook.svg' %}" alt="">
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit">
+        </form>
+    <a href="{% url 'users:login' %}">Already have an account?</a> 
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+            {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endblock content %}
