@@ -25,7 +25,7 @@ def sign_up(request):
             except FbUser.DoesNotExist:
                 messages.info(request, "Account created successfully!")
                 fm.save()
-                # send_registration_email.delay(fm.cleaned_data['email'], "Your Account has been succesfully created")
+                send_registration_email.delay(fm.cleaned_data['email'], "Your Account has been succesfully created")
     else:
         fm = SignUpForm()
     return render(request, "users/signup.html", {"form": fm})
@@ -111,50 +111,44 @@ def user_profile(request):
             post: post.is_liked_by_user(user=request.user) for post in list(user_posts)
         }
         return render(request, "users/profile.html", {"create_post_form":form,"liked_dict":liked_dict})
-    else:
-        HttpResponseRedirect(reverse("users:login"))
 
-# def get_feed(request):
-#     friendset1 = Friend.objects.values_list("from_friend", flat=True)
-#     friendset2 = Friend.objects.values_list("to_friend", flat=True)
-#     print(list(friendset1))
-#     print(list(friendset2))
-#     friendset = friendset1.union(friendset2)
-#     posts = (
-#         Post.objects.all()
-#         .filter(author__in=friendset)
-#         .exclude(author=request.user)
-#         .order_by("-created_at")
-#     )
-#     return render(request, "users/feed.html", {"posts": posts})
+
+def get_feed(request):
+    friendset1 = Friend.objects.values_list("from_friend", flat=True)
+    friendset2 = Friend.objects.values_list("to_friend", flat=True)
+    print(list(friendset1))
+    print(list(friendset2))
+    friendset = friendset1.union(friendset2)
+    posts = (
+        Post.objects.all()
+        .filter(author__in=friendset)
+        .exclude(author=request.user)
+        .order_by("-created_at")
+    )
+    return render(request, "users/feed.html", {"posts": posts})
 
 def get_profile(request):
-    if request.user.is_authenticated:
-        return render(request,"users/profile.html")
-    else:
-        HttpResponseRedirect(reverse("users:login"))
+    return render(request,"users/profile.html")
 
 
 def upload_profile_picture(request):
-    if request.user.is_authenticated:
-        request.user.profile_picture = request.FILES['profile-picture']
-        request.user.save()
-        return HttpResponseRedirect(reverse("users:get_profile"))
-    else:
-        HttpResponseRedirect(reverse("users:login"))
+    request.user.profile_picture = request.FILES['profile-picture']
+    request.user.save()
+    return HttpResponseRedirect(reverse("users:get_profile"))
 
 def upload_cover_picture(request):
-    if request.user.is_authenticated:
-        request.user.cover_photo = request.FILES['cover-photo']
-        request.user.save()
-        return HttpResponseRedirect(reverse("users:get_profile"))
-    else:
-        HttpResponseRedirect(reverse("users:login"))
+    request.user.cover_photo = request.FILES['cover-photo']
+    request.user.save()
+    return HttpResponseRedirect(reverse("users:get_profile"))
+
 
 def upload_bio(request):
+    request.user.bio = request.POST["bio"]
+    request.user.save()
+    return HttpResponseRedirect(reverse("users:get_profile"))
+
+def buy_diamonds(request):
     if request.user.is_authenticated:
-        request.user.bio = request.POST["bio"]
-        request.user.save()
-        return HttpResponseRedirect(reverse("users:get_profile"))
+        return render(request, "users/buy_diamonds.html")
     else:
-        HttpResponseRedirect(reverse("users:login"))
+        return HttpResponseRedirect(reverse("users:login"))

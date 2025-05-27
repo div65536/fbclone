@@ -243,3 +243,95 @@ sentry_sdk.init(
     # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
     send_default_pii=True,
 )
+
+LOGGING = {
+    "version":1,
+    "disable_existing_loggers":False,
+    "filters":{
+
+
+    },
+    "formatters":{
+        "simple":{
+            "format":"{levelname} {asctime:s} {name} {message}",
+            "style":"{",
+        },
+        "verbose":{
+            "format":"{levelname} {asctime:s} {name} {module}.py (line {lineno:d}) {funcName} {message}",
+            "style":"{"
+        } 
+    },
+    "handlers":{
+       "console":{
+           "level":"DEBUG",
+           "class":"logging.StreamHandler",
+           "formatter":"simple",
+       },
+       "file":{
+           "level":"INFO",
+           "class":"logging.FileHandler",
+           "formatter":"verbose",
+           "filename": BASE_DIR / "django.log",
+       },
+    #    "mail_admins":{
+    #        "level":"ERROR",
+    #        "filters":["require_debug_false"],
+    #        "class":"django.utils.log.AdminEmailHandler",
+    #        "include_html":True,
+    #        "formatter":"verbose"
+    #    }
+    },
+    "loggers":{
+        # "":{
+        #     "level":"WARNING",
+        #     "handlers":["console","file"]
+        # },
+        # "django":{
+        #     "level":"INFO",
+        #     "handlers":["console","file"],
+        #     "propagate":False,
+        # },
+        # "django.template":{
+        #     "level":"DEBUG",
+        #     "handlers":["file"],
+        #     "propagate":False,
+        # },
+        "users":{
+            'handlers':['file','console'],
+            "level":"INFO",
+        },
+        "posts":{
+            'handlers':['file','console'],
+            "level":"INFO"
+        },
+        "friends":{
+            'handlers':['file','console'],
+            "level":"INFO"
+        }
+    },
+}
+
+# CACHES ={
+#     'default':{
+#         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#         'LOCATION': 'random_cache',
+#         'TIMEOUT':60,
+#         'OPTIONS':{
+#             'MAX_ENTRIES': 1000
+#         }
+#     }
+# }
+
+CACHES ={
+    'default':{
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': 'random_cache',
+        'TIMEOUT':30,
+        'OPTIONS':{
+            'MAX_ENTRIES': 1000
+        }
+    }
+}
+
+STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = env('STRIPE_SECRET')

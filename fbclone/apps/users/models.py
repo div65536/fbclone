@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.utils.timezone import now
-
+import logging
+logger = logging.getLogger("users.models")
 
 # Create your models here.
 class FbUserManager(BaseUserManager):
@@ -30,6 +31,7 @@ class FbUserManager(BaseUserManager):
         )
         user.set_password(password)
         user.save()
+        logger.info("New Account created", extra={"user":user})
         return user
 
     def create_superuser(
@@ -70,6 +72,7 @@ class FbUser(AbstractBaseUser):
     bio = models.CharField(max_length=250, null=True,blank=True)
     date_joined = models.DateTimeField(default=now)
     last_login = models.DateTimeField(default=now)
+    diamonds = models.IntegerField(default=0)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -97,3 +100,5 @@ class FbUser(AbstractBaseUser):
     
     class Meta:
         app_label = 'users'
+
+

@@ -1,15 +1,14 @@
-import django
-django.setup()
 import pytest 
 from users.models import FbUser
 
-def test_user_model():
-    email = "test12@example.com"
-    username = "test12"
-    first_name = "test"
-    last_name = "user"
-    password = "123456789"
+@pytest.fixture
+def user_a(db):
+    return FbUser.objects.create_user(username="test01",email="test01@gmail.com",first_name="test01",last_name="user",password="123456789")
 
-    user = FbUser.objects.create_user(email=email, username=username,first_name=first_name,last_name=last_name)
+def test_foo(db,user_a):
+    assert user_a.username == "test01"
+    assert user_a.check_password("123456789") is True
+    assert user_a.first_name == "Test01"
+    assert user_a.last_name == "User"
+    assert user_a.email == "test01@gmail.com"
 
-    assert user.email == email

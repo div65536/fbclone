@@ -1,7 +1,8 @@
 from django.shortcuts import render, HttpResponse
 from .models import FriendRequest, Friend
 from users.models import FbUser
-
+import logging
+logger = logging.getLogger('friends.views')
 
 # Create your views here.
 def send_request(request):
@@ -11,6 +12,7 @@ def send_request(request):
     except FriendRequest.DoesNotExist:
         friend_request = FriendRequest(sender=request.user, receiver=receiver)
         friend_request.save()
+        logger.info(f"User({request.user.email}) sent a friend request to User({receiver.email})")
     return HttpResponse(status=204)
 
 

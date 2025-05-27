@@ -44,10 +44,13 @@
             <i class="fa-solid fa-video fa-xl"></i>
             <span>Video</span>
           </div>
-          <div class="option options">
-            <i class="fa-solid fa-shop fa-xl"></i>
-            <span>Marketplace</span>
-          </div>
+          <a href="{% url 'users:buy_diamonds' %}">
+            <div class="option options">
+              <i class="fa-solid fa-shop fa-xl"></i>
+              <span>Buy Diamonds</span>
+            </div>
+          </a>
+          
         </div>
         <div class="posts">
           {% for post,isliked in liked_dict.items %}

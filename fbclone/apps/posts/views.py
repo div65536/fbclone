@@ -5,7 +5,8 @@ from .forms import PostForm
 from django.http import JsonResponse
 from django.core import serializers
 from django.forms.models import model_to_dict
-
+import logging
+logger = logging.getLogger("posts.views")
 # Create your views here.
 
 
@@ -17,6 +18,7 @@ def create_post(request):
                 instance = postform.save(commit=False)
                 instance.author = request.user
                 instance.save()
+                logger.info(f"User({request.user.email}) uploaded a post")
         postform = PostForm()
         return HttpResponseRedirect(reverse("users:get_profile"))
     else:
@@ -39,9 +41,11 @@ def handlelike(request, post_id):
     if already_liked:
         like = post.likes.get(id=request.user.id)
         post.likes.remove(like)
+        logger.info(f"User({request.user.email}) unliked Post({post_id})")
         return HttpResponse(status=409)
     else:
         post.likes.add(request.user)
+        logger.info(f"User({request.user.email}) liked Post({post_id})")
         return HttpResponse(status=201)
 
 
@@ -70,6 +74,7 @@ def handlecomment(request, post_id, parent_id):
                 author=author, post=post, content=comment_body, parent=parent
             )
         comment.save()
+        logger.info(f"User({request.user.email}) Commented on a Post({post_id})")
         info = {}
         if author.profile_picture:
             info["profile_picture"] = author.profile_picture.url

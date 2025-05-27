@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from users import views
 from django.contrib.auth import views as auth_views
 
 app_name = "users"
@@ -16,4 +16,5 @@ urlpatterns = [
     path("upload_profile_picture/",views.upload_profile_picture,name="upload_profile_picture"),
     path("upload_cover_picture/", views.upload_cover_picture, name="upload_cover_picture"),
     path("upload_bio/", views.upload_bio, name="upload_bio"),
+    path("buy_diamonds", views.buy_diamonds, name="buy_diamonds")
 ]
