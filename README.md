@@ -1,1 +1,2 @@
-What do you write in Readme.md file ?
+To install dependencies - 
+pip install -r requirements.txt 
