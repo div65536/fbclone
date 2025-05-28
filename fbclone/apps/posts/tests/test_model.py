@@ -14,6 +14,7 @@ class PostModelTest(TestCase):
         self.assertEqual(self.post.likes.count(),0)
         self.assertIn(self.comment, self.post.comments.all())
         self.assertEqual(self.post.comments.count(),1)
+        self.assertEqual(self.post.__str__(), "coolcoolcool")
         
     def test_comment_model(self):
         self.assertEqual(self.comment.post, self.post)

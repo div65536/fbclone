@@ -40,8 +40,6 @@ class UserModelTestWithFixtures(TestCase):
     fixtures=["users.json"]
     def test_user(self):
         user = FbUser.objects.get(email="piyush12@gmail.com")
-        import pdb
-        pdb.set_trace()
         self.assertEqual(user.email,"piyush12@gmail.com")
         self.assertEqual(user.first_name,"Piyush")
         self.assertEqual(user.last_name,"Negi")

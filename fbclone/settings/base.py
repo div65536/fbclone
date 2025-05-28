@@ -237,12 +237,12 @@ REST_FRAMEWORK = {
 }
 
 
-sentry_sdk.init(
-    dsn="https://83aafe45a6051ee65bce9fcf037b8013@o4509314127495168.ingest.us.sentry.io/4509314224881664",
-    # Add data like request headers and IP for users,
-    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
-    send_default_pii=True,
-)
+# sentry_sdk.init(
+#     dsn="https://83aafe45a6051ee65bce9fcf037b8013@o4509314127495168.ingest.us.sentry.io/4509314224881664",
+#     # Add data like request headers and IP for users,
+#     # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+#     send_default_pii=True,
+# )
 
 LOGGING = {
     "version":1,

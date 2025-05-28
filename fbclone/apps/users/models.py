@@ -15,6 +15,7 @@ class FbUserManager(BaseUserManager):
         last_name=None,
         date_of_birth=None,
         gender=None,
+        profile_picture=None
         
     ):
         if not email:
@@ -27,7 +28,8 @@ class FbUserManager(BaseUserManager):
             last_name=last_name,
             date_of_birth=date_of_birth,
             gender=gender,
-            username=username
+            username=username,
+            profile_picture=profile_picture
         )
         user.set_password(password)
         user.save()
@@ -63,7 +65,7 @@ class FbUser(AbstractBaseUser):
     first_name = models.CharField(max_length=50, null=True)
     last_name = models.CharField(max_length=50, null=True)
     date_of_birth = models.DateField(null=True)
-    profile_picture = models.ImageField(null=True, blank=True, upload_to="images/", default=None)
+    profile_picture = models.ImageField(null=True, blank=True, upload_to="images/")
     cover_photo = models.ImageField(null=True, blank=True, upload_to="images/")
     gender = models.CharField(max_length=6, null=True)
     email = models.EmailField(max_length=254, unique=True)

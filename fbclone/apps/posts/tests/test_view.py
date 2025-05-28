@@ -7,16 +7,19 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 class TestViews(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = FbUser.objects.create_user(first_name="user", last_name="test", username="user1", email="user@example.com", password="12345678")
+        self.user2 = FbUser.objects.create_user(first_name="user2", last_name="test", username="user2", email="user2@example.com",password="12345678")
+        self.user = FbUser.objects.create_user(first_name="user", last_name="test", username="user1", email="user@example.com", password="12345678",profile_picture="static/images/Default_pfp.jpg")
         self.image = SimpleUploadedFile("image.jpg", content=open("fbclone/static/images/Default_pfp.jpg", 'rb').read(), content_type="image/jpeg")
         self.post = {
             "image":self.image,
             "body":"coolcoolcool"
         }
         self.dbpost = Post.objects.create(author=self.user, image="static/images/Default_pfp.jpg", body="coolcoolcool")
+        self.comment2 = Comment.objects.create(author=self.user, post=self.dbpost,content="ok ok ok")
         self.alreadyliked = Post.objects.create(author=self.user, image="static/images/Default_pfp.jpg", body="coolcoolcool2")
         self.alreadyliked.likes.add(self.user)
         self.comment = Comment.objects.create(author=self.user, post=self.alreadyliked, content="kun faya kun")
+        self.comment2 = Comment.objects.create(author=self.user, post=self.alreadyliked, content="kun faya kun", parent=self.comment)
 
     def test_create_post_unauthenticated(self):
         response = self.client.post(reverse("posts:create_post"), self.post)
@@ -46,14 +49,14 @@ class TestViews(TestCase):
 
     def test_handle_comment_get(self):
         self.client.login(username="user@example.com", password="12345678")
-        response = self.client.get(reverse("posts:handlecomment", kwargs={'post_id':self.alreadyliked.id,'parent_id':9999}))
-
+        response = self.client.get(reverse("posts:handlecomment", kwargs={'post_id':self.alreadyliked.id,'parent_id':self.comment.id}))
         self.assertEqual(response.status_code,200)
         self.assertJSONEqual(response.content,{})
     
     def test_handle_comment_post(self):
         self.client.login(username="user@example.com", password="12345678")
         response = self.client.post(reverse("posts:handlecomment", kwargs={'post_id':self.alreadyliked.id, 'parent_id':9999}))
+        response = self.client.post(reverse("posts:handlecomment", kwargs={'post_id':self.alreadyliked.id, 'parent_id':self.comment.id}))
         self.assertEqual(response.status_code, 201)
 
     def test_get_comment_author_info(self):
@@ -71,5 +74,10 @@ class TestViews(TestCase):
         self.assertRedirects(response, reverse("users:get_profile"))
 
 
+    def test_handle_comment_post2(self):
+        self.client.login(username="user2@example.com", password="12345678")
+        response = self.client.post(reverse("posts:handlecomment", kwargs={'post_id':self.alreadyliked.id, 'parent_id':9999}))
+        response = self.client.post(reverse("posts:handlecomment", kwargs={'post_id':self.alreadyliked.id, 'parent_id':self.comment.id}))
+        self.assertEqual(response.status_code, 201)
 
 
