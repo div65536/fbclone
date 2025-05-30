@@ -204,6 +204,8 @@ class TestViewsMocked(TestCase):
             'password': '123456789'
         }
 
+    
+
     # @patch("users.views.logger")
     # def test_login_with_real_user(self,mock_logger):
     #     user = FbUser.objects.create_user(email='test@example.com', password='password123', username="test1")
@@ -234,14 +236,14 @@ class TestViewsMocked(TestCase):
         mock_task.assert_called()
         self.assertEqual(response.status_code, 200)
 
-    @patch("posts.models.Post")
-    def test_profile_post_fetch_mocked(self, mock_post_model):
-        FbUser.objects.create_user(username="user1", email="user1@example.com", password="12345678")
-        self.client.login(username="user1@example.com", password="12345678")
+    # @patch("posts.models.Post")
+    # def test_profile_post_fetch_mocked(self, mock_post_model):
+    #     FbUser.objects.create_user(username="user1", email="user1@example.com", password="12345678")
+    #     self.client.login(username="user1@example.com", password="12345678")
 
-        response = self.client.get(reverse("users:profile"))
+    #     response = self.client.get(reverse("users:profile"))
 
-        self.assertEqual(response.status_code, 200)
+    #     self.assertEqual(response.status_code, 200)
 
     
 

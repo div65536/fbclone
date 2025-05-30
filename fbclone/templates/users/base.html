@@ -15,6 +15,9 @@
       {% include "users/navbar.html" %}
       <div class="flex-container">
         <div class="list-options">
+          <div class="option options">
+              <span>Weather:{{weather_description}}</span>
+          </div>
           <a href="{% url 'users:get_profile' %}">
             <div class="option options">
               <i class="fa-solid fa-circle-user fa-xl"></i>
@@ -110,13 +113,10 @@
 
         </div>
         <div class="groupchats">
-          <div class="option">
-            <i class="fa-solid fa-plus fa-xl"></i>
-            <span>Create group chat</span>
-          </div>
+
         </div>
       </div>
-      
+    <script src="{% static 'js/homepage.js' %}"></script>
     <script src="{% static 'js/jquery.js' %}"></script>
     <script src="{% static 'js/popper.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
