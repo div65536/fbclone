@@ -15,7 +15,58 @@ from django.views.decorators.cache import never_cache
 import requests
 import logging
 import json
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic.base import TemplateView
+from django.conf import settings
+from django.http.response import JsonResponse
+import stripe
 logger = logging.getLogger("users.views")
+
+class HomePageView(TemplateView):
+    template_name = 'users/home.html'
+
+
+class SuccessView(TemplateView):
+    template_name = 'users/success.html'
+
+
+class CancelledView(TemplateView):
+    template_name = 'users/cancelled.html'
+
+@csrf_exempt
+def stripe_config(request):
+    if request.method == 'GET':
+        stripe_config = {'publicKey': settings.STRIPE_PUBLISHABLE_KEY}
+        return JsonResponse(stripe_config, safe=False)
+
+@csrf_exempt
+def create_checkout_session(request):
+    domain_url = 'http://localhost:8000/users/'
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+
+    try:
+        # Create new Checkout Session for the order
+        checkout_session = stripe.checkout.Session.create(
+            success_url=domain_url + 'success?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url=domain_url + 'cancelled/',
+            payment_method_types=['card'],
+            mode='payment',
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'usd',
+                        'product_data': {
+                            'name': 'Diamond',
+                        },
+                        'unit_amount': 100,  # Amount in cents (1 USD = 100 cents)
+                    },
+                    'quantity': 1,
+                }
+            ]
+        )
+        return JsonResponse({'sessionId': checkout_session['id']})
+    except Exception as e:
+        return JsonResponse({'error': str(e)})
 
 
 def sign_up(request):
@@ -25,7 +76,7 @@ def sign_up(request):
         if fm.is_valid():
             messages.info(request, "Account created successfully!")
             fm.save()
-            send_registration_email.delay(fm.cleaned_data['email'], "Your Account has been succesfully created")
+            # send_registration_email.delay(fm.cleaned_data['email'], "Your Account has been succesfully created")
         else:
             messages.info(request, "Account with this email already exists")
 

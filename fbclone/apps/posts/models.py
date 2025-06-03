@@ -9,7 +9,7 @@ class Post(models.Model):
     body = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(
-        "users.FbUser", related_name="liked_posts", null=True, blank=True
+        "users.FbUser", related_name="liked_posts", blank=True
     )
 
     def __str__(self):

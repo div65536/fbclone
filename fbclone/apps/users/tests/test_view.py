@@ -5,7 +5,7 @@ from friends.models import Friend
 from posts.models import Post
 from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest.mock import patch, MagicMock
-
+import json
 
 class TestViews(TestCase):
     def setUp(self):
@@ -204,7 +204,16 @@ class TestViewsMocked(TestCase):
             'password': '123456789'
         }
 
-    
+    @patch('requests.get')
+    def test_home(self,mock_get):
+        user = FbUser.objects.create_user(email="test@example.com", password="password123", username="test1")
+        self.client.login(username="test@example.com", password="password123")
+        mock_get.json.return_value = {"current":{"weather_descriptions":["Sunny"]}}
+        response = self.client.get(reverse("users:home"))
+
+        mock_get.assert_called()
+
+
 
     # @patch("users.views.logger")
     # def test_login_with_real_user(self,mock_logger):

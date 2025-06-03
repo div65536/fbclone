@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'django_extensions',
     'rest_framework.authtoken',
+    'django_celery_beat',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -333,5 +334,5 @@ CACHES ={
     }
 }
 
-STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY')
+STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = env('STRIPE_SECRET')
