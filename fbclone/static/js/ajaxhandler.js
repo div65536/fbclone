@@ -181,3 +181,26 @@ function handleReadLess(event){
     readMoreLink = document.getElementById(`read-more-link${postId}`)
     readMoreLink.style.display="inline"
 }
+
+function handleStars(event){
+    postId = event.target.dataset.postid
+    csrfToken = document.getElementById(`csrftoken${postId}`).value
+    console.log(document.getElementById(`quantity${postId}`).value)
+    amount = parseInt(document.getElementById(`quantity${postId}`).value)
+    let xhr = new XMLHttpRequest()
+    xhr.open("POST", `/posts/star/${postId}/${amount}`)
+    xhr.setRequestHeader('X-CSRFToken', csrfToken)
+    xhr.setRequestHeader('Content-Type','text/plain')
+    xhr.onload = function(){
+        if(xhr.status == 201){
+            response_json = JSON.parse(xhr.responseText)
+            amount = parseInt(response_json.amount)
+            alert(response_json.msg)
+            stars = document.getElementById(`star-count${postId}`).innerText.split(" ")[1]
+            stars = parseInt(stars)
+            stars = stars + amount
+            document.getElementById(`star-count${postId}`).innerText = `Stars: ${stars}`
+        }
+    } 
+    xhr.send()
+}

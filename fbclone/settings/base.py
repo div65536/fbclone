@@ -65,6 +65,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework.authtoken',
     'django_celery_beat',
+    'django_unused_media',
+    'drf_yasg',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -336,3 +338,4 @@ CACHES ={
 
 STRIPE_PUBLISHABLE_KEY = env('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = env('STRIPE_SECRET')
+STRIPE_ENDPOINT_SECRET = "whsec_14ad87f89480b2f6a9d065f06800e14b0da3a6407fb3e86974f194065eacd28a"

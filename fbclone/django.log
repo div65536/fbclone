@@ -5108,3 +5108,21 @@ INFO 2025-06-02 12:19:14,173 users.views views.py (line 23) sign_up ok computer
 INFO 2025-06-02 12:20:14,620 users.views views.py (line 23) sign_up ok computer
 INFO 2025-06-02 12:27:48,601 posts.views views.py (line 21) create_post User(amit12@gmail.com) uploaded a post
 INFO 2025-06-02 12:28:05,216 friends.views views.py (line 15) send_request User(amit12@gmail.com) sent a friend request to User(divyanshyadav@thoughtwin.com)
+INFO 2025-06-04 05:18:28,949 posts.views views.py (line 48) handlelike User(divyanshyadav@thoughtwin.com) liked Post(36)
+INFO 2025-06-04 05:18:30,646 posts.views views.py (line 44) handlelike User(divyanshyadav@thoughtwin.com) unliked Post(36)
+INFO 2025-06-04 05:25:07,279 posts.views views.py (line 48) handlelike User(divyanshyadav@thoughtwin.com) liked Post(36)
+INFO 2025-06-04 05:25:07,636 posts.views views.py (line 44) handlelike User(divyanshyadav@thoughtwin.com) unliked Post(36)
+INFO 2025-06-04 05:25:07,978 posts.views views.py (line 48) handlelike User(divyanshyadav@thoughtwin.com) liked Post(36)
+INFO 2025-06-04 05:25:08,176 posts.views views.py (line 44) handlelike User(divyanshyadav@thoughtwin.com) unliked Post(36)
+INFO 2025-06-04 05:25:08,343 posts.views views.py (line 48) handlelike User(divyanshyadav@thoughtwin.com) liked Post(36)
+INFO 2025-06-04 05:25:08,514 posts.views views.py (line 44) handlelike User(divyanshyadav@thoughtwin.com) unliked Post(36)
+INFO 2025-06-04 05:25:08,664 posts.views views.py (line 48) handlelike User(divyanshyadav@thoughtwin.com) liked Post(36)
+INFO 2025-06-04 05:25:09,001 posts.views views.py (line 44) handlelike User(divyanshyadav@thoughtwin.com) unliked Post(36)
+INFO 2025-06-04 05:25:09,182 posts.views views.py (line 48) handlelike User(divyanshyadav@thoughtwin.com) liked Post(36)
+INFO 2025-06-04 05:25:12,085 posts.views views.py (line 77) handlecomment User(divyanshyadav@thoughtwin.com) Commented on a Post(36)
+INFO 2025-06-04 06:47:00,081 posts.views views.py (line 44) handlelike User(divyanshyadav@thoughtwin.com) unliked Post(36)
+INFO 2025-06-04 06:52:51,140 posts.views views.py (line 21) create_post User(amit12@gmail.com) uploaded a post
+INFO 2025-06-04 06:53:21,490 posts.views views.py (line 48) handlelike User(divyanshyadav@thoughtwin.com) liked Post(37)
+INFO 2025-06-04 06:55:08,370 posts.views views.py (line 77) handlecomment User(divyanshyadav@thoughtwin.com) Commented on a Post(37)
+INFO 2025-06-04 08:11:55,890 friends.views views.py (line 15) send_request User(divyanshyadav@thoughtwin.com) sent a friend request to User(piyush12@gmail.com)
+INFO 2025-06-04 08:13:29,853 posts.views views.py (line 77) handlecomment User(divyanshyadav@thoughtwin.com) Commented on a Post(10)

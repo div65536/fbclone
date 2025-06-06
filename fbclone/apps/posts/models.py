@@ -11,6 +11,7 @@ class Post(models.Model):
     likes = models.ManyToManyField(
         "users.FbUser", related_name="liked_posts", blank=True
     )
+    stars = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.body

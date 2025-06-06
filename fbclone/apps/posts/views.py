@@ -100,3 +100,16 @@ def edit_post(request, post_id):
         post.body = request.POST["text"]
         post.save()
         return HttpResponseRedirect(reverse("users:get_profile"))
+
+
+def send_stars(request,post_id,amount):
+    if request.method == "POST":
+        post = Post.objects.get(pk=post_id)
+        if request.user.stars >= amount:
+            request.user.stars -= amount
+            request.user.save()
+            post.stars += amount
+            post.save()
+            return JsonResponse({"msg":"Stars send", "amount":amount}, status=201)
+        else:
+            return JsonResponse({"msg":"You do not have enough stars", "amount":0}, status=201)

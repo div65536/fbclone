@@ -50,7 +50,7 @@
           <a href="{% url 'users:buy_diamonds' %}">
             <div class="option options">
               <i class="fa-solid fa-shop fa-xl"></i>
-              <span>Buy Diamonds</span>
+              <span>Buy Stars</span>
             </div>
           </a>
           
@@ -73,6 +73,7 @@
                   <div class="date">
                     {{post.created_at}}
                   </div>
+                  <div class="stars" id="star-count{{post.id}}">Stars: {{post.stars}}</div>
                 </div>
           
               </div>
@@ -102,10 +103,29 @@
                   {% endif %}
                 </div>
                 <button class="post-button btn btn-primary" data-toggle="modal" data-target="#exampleModal{{post.id}}">Comment</button>
-                <button class="post-button btn btn-primary">Share</button>
+                <button class="post-button btn btn-primary" data-toggle="modal" data-target="#stars{{post.id}}">Stars</button>
               </div>
             </div>
             {% include "users/post_comment_modal.html" with post=post %}
+            <div class="modal fade" id="stars{{post.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Send Stars</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <img class="diamond-img" src="https://cdn-icons-png.flaticon.com/512/616/616490.png" alt="Diamond">
+                      <input type="number" id="quantity{{post.id}}" class="quantity-input" min="1" value="1" />
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-postid="{{post.id}}" id="send-stars-button{{post.id}}" onclick="handleStars(event)">Send</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
           </div>
           
           <br>

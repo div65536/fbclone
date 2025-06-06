@@ -19,4 +19,5 @@ urlpatterns = [
         name="commentauthorinfo",
     ),
     path("editpost/<int:post_id>", views.edit_post, name="edit_post"),
+    path("star/<int:post_id>/<int:amount>", views.send_stars, name="send_stars"),
 ]

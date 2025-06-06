@@ -74,7 +74,7 @@ class FbUser(AbstractBaseUser):
     bio = models.CharField(max_length=250, null=True,blank=True)
     date_joined = models.DateTimeField(default=now)
     last_login = models.DateTimeField(default=now)
-    diamonds = models.IntegerField(default=0)
+    stars = models.IntegerField(default=0)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -102,5 +102,4 @@ class FbUser(AbstractBaseUser):
     
     class Meta:
         app_label = 'users'
-
 

@@ -45,7 +45,14 @@ def create_checkout_session(request):
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
     try:
-        # Create new Checkout Session for the order
+        data = json.loads(request.body)
+        quantity = int(data.get('quantity', 1))
+        if quantity < 1:
+            quantity = 1
+
+        price_per_diamond_cents = 100  
+        total_amount = price_per_diamond_cents * quantity
+
         checkout_session = stripe.checkout.Session.create(
             success_url=domain_url + 'success?session_id={CHECKOUT_SESSION_ID}',
             cancel_url=domain_url + 'cancelled/',
@@ -56,18 +63,45 @@ def create_checkout_session(request):
                     'price_data': {
                         'currency': 'usd',
                         'product_data': {
-                            'name': 'Diamond',
+                            'name': f'{quantity} Diamond{"s" if quantity > 1 else ""}',
                         },
-                        'unit_amount': 100,  # Amount in cents (1 USD = 100 cents)
+                        'unit_amount': price_per_diamond_cents,
                     },
-                    'quantity': 1,
+                    'quantity': quantity,
                 }
             ]
         )
+        request.user.stars += quantity
+        request.user.save()
         return JsonResponse({'sessionId': checkout_session['id']})
     except Exception as e:
         return JsonResponse({'error': str(e)})
 
+
+@csrf_exempt
+def stripe_webhook(request):
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    import pdb
+    pdb.set_trace()
+    endpoint_secret = settings.STRIPE_ENDPOINT_SECRET
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+    
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+    
+        return HttpResponse(status=400)
+
+    if event['type'] == 'checkout.session.completed':
+        print("Payment was successful.")
+        
+    return HttpResponse(status=200)
 
 def sign_up(request):
     if request.method == "POST":
