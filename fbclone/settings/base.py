@@ -15,7 +15,7 @@ import os
 import sys
 import sentry_sdk
 import environ
-
+import dj_database_url
 env = environ.Env()
 
 
@@ -116,6 +116,8 @@ DATABASES = {
         "PORT": "5432",
     }
 }
+DATABASE_URL = "postgresql://fbdb_zweh_user:yGTe2q4H4PVBzDMUIX9ntl3tP6YGxia9@dpg-d14i9cruibrs73aftnbg-a/fbdb_zweh"
+DATABASES["default"] = dj_database_url.parse(DATABASE_URL)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

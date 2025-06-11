@@ -21,6 +21,7 @@ colorama==0.4.3
 coverage==7.6.1
 cron-descriptor==1.4.5
 cryptography==2.8
+dj-database-url==1.1.0
 django==4.2.23
 django-allauth==65.8.0
 django-celery-beat==2.8.1

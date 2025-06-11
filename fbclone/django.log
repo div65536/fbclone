@@ -5135,3 +5135,5 @@ INFO 2025-06-10 09:47:25,152 posts.views views.py (line 77) handlecomment User(d
 INFO 2025-06-10 09:47:27,719 posts.views views.py (line 77) handlecomment User(divyanshyadav@thoughtwin.com) Commented on a Post(37)
 INFO 2025-06-10 09:47:30,140 posts.views views.py (line 77) handlecomment User(divyanshyadav@thoughtwin.com) Commented on a Post(37)
 INFO 2025-06-10 09:47:37,448 posts.views views.py (line 77) handlecomment User(divyanshyadav@thoughtwin.com) Commented on a Post(37)
+INFO 2025-06-11 05:55:00,453 posts.views views.py (line 48) handlelike User(divyanshyadav@thoughtwin.com) liked Post(34)
+INFO 2025-06-11 07:19:05,068 users.views views.py (line 108) sign_up ok computer
