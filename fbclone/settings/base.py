@@ -38,7 +38,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = ['postit-kqkt.onrender.com', 'localhost', '127.0.0.1']
-
+CSRF_TRUSTED_ORIGINS = ['https://postit-kqkt.onrender.com']
 SITE_ID = 1
 
 # Application definition
