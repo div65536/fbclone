@@ -143,14 +143,14 @@ def login_user(request):
 @never_cache
 def home(request):
     if request.user.is_authenticated:
-        url = "https://api.weatherstack.com/current?access_key=94ee42c826d70475b2880369e7453a2b"
-        latitude= request.GET.get("latitude")
-        longitude = request.GET.get("longitude")
-        querystring = {"query":f"{latitude},{longitude}"}
-        response = requests.get(url, params=querystring)
-        data = response.json()
-        print(data)
-        weather_description = data["current"]["weather_descriptions"][0]
+        # url = "https://api.weatherstack.com/current?access_key=94ee42c826d70475b2880369e7453a2b"
+        # latitude= request.GET.get("latitude")
+        # longitude = request.GET.get("longitude")
+        # querystring = {"query":f"{latitude},{longitude}"}
+        # response = requests.get(url, params=querystring)
+        # data = response.json()
+        # print(data)
+        # weather_description = data["current"]["weather_descriptions"][0]
         
         user = FbUser.objects.get(email=request.user)
         friendset1 = Friend.objects.values_list("from_friend", flat=True).filter(
@@ -173,7 +173,7 @@ def home(request):
         return render(
             request,
             "users/base.html",
-            {"user": user, "posts": posts, "liked_dict": liked_dict,"weather_description":weather_description},
+            {"user": user, "posts": posts, "liked_dict": liked_dict},
         )
 
     else:
