@@ -110,6 +110,7 @@ def sign_up(request):
         if fm.is_valid():
             messages.info(request, "Account created successfully!")
             fm.save()
+            return HttpResponseRedirect(reverse("users:login"))
             # send_registration_email.delay(fm.cleaned_data['email'], "Your Account has been succesfully created")
         else:
             messages.info(request, "Account with this email already exists")

@@ -172,6 +172,28 @@ function handleReadMore(event){
     readMoreLink.style.display="none"
 }
 
+function handleReadMoreModal(event){
+    postId = event.target.dataset.postid
+    console.log(postId) 
+    hiddenBody = document.getElementById(`hidden-body-modal${postId}`)
+    hiddenBody.style.display="inline"
+    readLessLink = document.getElementById(`read-less-link-modal${postId}`)
+    readLessLink.style.display="inline"
+    readMoreLink = document.getElementById(`read-more-link-modal${postId}`)
+    readMoreLink.style.display="none"
+}
+
+
+function handleReadLessModal(event){
+    postId = event.target.dataset.postid
+    hiddenBody = document.getElementById(`hidden-body-modal${postId}`)
+    hiddenBody.style.display="none"
+    readLessLink = document.getElementById(`read-less-link-modal${postId}`)
+    readLessLink.style.display="none"
+    readMoreLink = document.getElementById(`read-more-link-modal${postId}`)
+    readMoreLink.style.display="inline"
+}
+
 function handleReadLess(event){
     postId = event.target.dataset.postid
     hiddenBody = document.getElementById(`hidden-body${postId}`)

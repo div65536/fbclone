@@ -25,8 +25,14 @@
                     </div>
               
                   </div>
-                  <div class="bio-nested-modal">
+                  <!-- <div class="bio-nested-modal">
                     {{post.body}}
+                  </div> -->
+                  <div class="bio bio-nested-modal">
+                      <p>{{post.body|slice:"60"}}<span style="display:none;" id="hidden-body-modal{{post.id}}">{{post.body|slice:"61:"}}</span>
+                      <button class="btn btn-info" data-postid="{{post.id}}" id="read-more-link-modal{{post.id}}" style="display: inline-block;" onclick="handleReadMoreModal(event)">Read More</button>
+                      <button class="btn btn-info" data-postid="{{post.id}}" id="read-less-link-modal{{post.id}}" style="display: none;" onclick="handleReadLessModal(event)">Read Less</button>
+                     </p>
                   </div>
                   <div class="image-container-nested-modal">
                     <img class="post-image-nested-modal" src="{{post.image.url}}" alt="">
